@@ -13,6 +13,7 @@ let io = socketio(server);
 app.use("/css", express.static(__dirname + "/css"));
 app.use("/js", express.static(__dirname + "/js"));
 app.use("/pages", express.static(__dirname + "/pages"));
+app.use("/assets", express.static(__dirname + "/assets"));
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/pages/game.html");
@@ -38,6 +39,11 @@ class Position {
     this.x = x;
     this.y = y;
   }
+
+  set(x, y) {
+    this.x = x;
+    this.y = y;
+  }
 }
 
 class Player {
@@ -45,11 +51,16 @@ class Player {
     this.uuid = uuid();
     this.name = name;
     this.position = new Position(x, y);
+    this.oldPosition = new Position(0, 0);
   }
 
   setPosition(x, y) {
-    this.position.x = x;
-    this.position.y = y;
+    if (
+      this.oldPosition.x != this.position.x &&
+      this.oldPosition.y != this.position.y
+    )
+      this.oldPosition.set(this.position.x, this.position.y);
+    this.position.set(x, y);
   }
 }
 
@@ -85,6 +96,7 @@ io.on("connect", (socket) => {
 
   socket.on("mouse", (data) => {
     let player = PM.get(data.uuid);
+
     if (!player) return;
     player.setPosition(data.x, data.y);
 
@@ -92,23 +104,7 @@ io.on("connect", (socket) => {
       socket.emit("mouse", player);
     }
   });
-  /**
-   * Init login / join page
-   */
-  //   socket.on("browserConnection", (code) => {
-  //     RoomManager.roomExist(
-  //       code,
-  //       (room) => {
-  //         socket.emit("showSection", "join");
-  //       },
-  //       () => {
-  //         socket.emit("showSection", "login");
-  //       }
-  //     );
-  //   });
-  /**
-   * Player disconnect from room
-   */
+
   socket.on("disconnect", (data) => {
     PM.remove(socket.uuid);
     for (let newSocket of Object.values(sockets)) {
