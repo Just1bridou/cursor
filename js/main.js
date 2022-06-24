@@ -31,8 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let container = document.createElement("div");
       container.classList.add("container");
 
-      let lights = document.createElement("div");
-      lights.classList.add("lights");
+
 
       let element = document.createElement("img");
       element.classList.add("cursor");
@@ -47,10 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let text = document.createElement("div");
       text.classList.add("container-text");
       text.innerText = this.name;
-
-      container.appendChild(lights)
-
-      //document.querySelector('.night').appendChild(lights)
 
       container.appendChild(element);
       container.appendChild(text);
@@ -83,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let rotation = 0
 
         let magnitude =  Math.abs(Math.sqrt(vectX * vectX + vectY * vectY));
-        if(magnitude > 0.2) {
+        if(magnitude > 0.3) {
            rotation =  Math.atan(vectY/vectX) *  (360 / (Math.PI * 2))
           rotation = (rotation-90) - 360 * Math.floor((rotation-90)/360);
           if(vectX <= 0)
@@ -94,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
           //console.log(rotation);
           rotation = closestEquivalentAngle(this.oldRotation, rotation)
-          this.element.style.transform = `rotateZ(${rotation}deg)`;
+          this.element.style.transform = `rotateZ(${rotation}deg) translate(-50%, 25%)`;
           this.oldRotation = rotation;
         }
   
