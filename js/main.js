@@ -54,11 +54,11 @@ document.addEventListener("DOMContentLoaded", () => {
       container.style.left = this.x + "%";
 
       this.element = container;
-      document.querySelector(".night").addEventListener('mousemove', event => {
+      // document.querySelector(".night").addEventListener('mousemove', event => {
         
-        event.target.style.webkitMaskPositionX =  container.offsetLeft + event.target.offsetWidth/2 + "px";
-        event.target.style.webkitMaskPositionY =  container.offsetTop + event.target.offsetHeight/2 + "px";
-      }, false);
+      //   event.target.style.webkitMaskPositionX =  container.offsetLeft + event.target.offsetWidth/2 + "px";
+      //   event.target.style.webkitMaskPositionY =  container.offsetTop + event.target.offsetHeight/2 + "px";
+      // }, false);
 
       document.querySelector(".game").appendChild(this.element);
     }
@@ -89,55 +89,17 @@ document.addEventListener("DOMContentLoaded", () => {
   
           //console.log(rotation);
           rotation = closestEquivalentAngle(this.oldRotation, rotation)
-          this.element.style.transform = `rotateZ(${rotation}deg) translate(-50%, 25%)`;
+          this.element.style.transform = `rotateZ(${rotation}deg) translate(-50%, 10%)`;
           this.oldRotation = rotation;
         }
   
       }
 
-      function closestEquivalentAngle(from, to) {
-        var delta = ((((to - from) % 360) + 540) % 360) - 180;
-        return from + delta;
-    }
      
       let LIMIT = 5;
 
       let vectorX = 0;
       let vectorY = 0;
-
-      //   console.log(this.oldPosition.x - x);
-      //   if (
-      //     Math.abs(this.oldPosition.x - x) > LIMIT ||
-      //     Math.abs(this.oldPosition.y - y) > LIMIT
-      //   ) {
-      //     this.oldPosition = oldPosition;
-      //   }
-
-      //   if (Math.abs(this.oldPosition.x - x) > LIMIT) {
-      //     console.log("X");
-      //     this.oldPosition = oldPosition;
-      //     // console.log(this.x);
-      //     // console.log(this.oldPosition.x);
-      //     // console.log(this.x - this.oldPosition.x);
-      //     this.calcPositionVectorX(this.x - this.oldPosition.x);
-      //   }
-
-      //   if (Math.abs(this.oldPosition.y - y) > LIMIT) {
-      //     console.log("Y");
-      //     this.oldPosition = oldPosition;
-      //     this.calcPositionVectorY(this.y - this.oldPosition.y);
-      //   }
-
-      //   if (oldPosition.x - x != 0 && oldPosition.y - y != 0) {
-      //     this.oldPosition = oldPosition;
-      //   }
-
-      //this.oldPosition = oldPosition;
-
-      //   let vector = this.calcPositionVector(
-      //     this.x - this.oldPosition.x,
-      //     this.y - this.oldPosition.y
-      //   );
 
       // PLACE ELEMENT ON MAP
       this.x = x;
@@ -145,10 +107,12 @@ document.addEventListener("DOMContentLoaded", () => {
       this.element.style.top = this.y + "%";
       this.element.style.left = this.x + "%";
 
-      //   console.log(this.vector);
 
-      //   let z = Math.atan2(this.vector.y, this.vector.x);
-      //   this.element.style.transform = `rotateZ(${z}rad)`;
+      function closestEquivalentAngle(from, to) {
+        var delta = ((((to - from) % 360) + 540) % 360) - 180;
+        return from + delta;
+      }
+     
     }
 
     calcPositionVectorX(x) {
@@ -368,20 +332,30 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+
+
+let isReady = false;
+setInterval(() => {  
+  isReady = true
+        
+},10)
+
   document.addEventListener("mousemove", (e) => {
     //if (!uuid || !CM.get(uuid).move) return;
 
     let xpos = parseFloat(((e.clientX / window.innerWidth) * 100).toFixed(2))
     let ypos = parseFloat(((e.clientY / window.innerHeight) * 100).toFixed(2))
 
-    if(xpos  != 0 &&  ypos != 0) {
-    
-    socket.emit("mouse", {
-      uuid: uuid,
-      x: xpos,
-      y: ypos,
-    });
-  }});
+      if(xpos  != 0 &&  ypos != 0 && isReady) {
+        isReady = false
+        socket.emit("mouse", {
+          uuid: uuid,
+          x: xpos,
+          y: ypos,
+        });
+    }
+
+  });
 
 
   socket.on("login", (data) => {

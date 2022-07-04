@@ -57,7 +57,7 @@
   height: 100vh;
   width: 100vw;
   background-color: rgb(236, 236, 236);
-  cursor: none; 
+  /* cursor: none;  */
 }
 
 .container {
@@ -66,7 +66,7 @@
   flex-direction: column;
   align-items: center;
   transform-origin: 0% 0%;
-  transition: 0.1s transform ease;
+  transition: 0.3s transform ease-out;
 }
 
 .container-text {
@@ -123,7 +123,7 @@
   pointer-events: none;
   height: 50px;
   width: auto;
-  transform: translate(-50%,25%);
+  /* transform: translate(-50%,25%); */
 }
 
 
