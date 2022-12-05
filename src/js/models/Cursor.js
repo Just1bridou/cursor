@@ -1,4 +1,5 @@
 import { TYPE } from "../constants/constants.js";
+import Car from '../../assets/car.png';
 
 export default class Cursor {
   constructor(name, uuid, x, y, oldPosition) {
@@ -24,7 +25,7 @@ export default class Cursor {
     let element = document.createElement("img");
     element.classList.add("cursor");
     element.classList.add("cursor-car");
-    element.src = "/assets/car.png";
+    element.src = Car;
     element.uuid = this.uuid;
     element.type = this.type;
 
