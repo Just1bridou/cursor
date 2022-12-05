@@ -1,26 +1,32 @@
+
+
+
 let express = require("express");
 let socketio = require("socket.io");
 let http = require("http");
-
+let child_process = require("child_process");
 const dotenv = require("dotenv");
 
 dotenv.config();
+
+
+const child = child_process.spawn('webpack --mode development', {
+  stdio: 'inherit',
+  shell: true
+});
 
 let app = express();
 let server = http.Server(app);
 let io = socketio(server);
 
-app.use("/css", express.static(__dirname + "/css"));
-app.use("/js", express.static(__dirname + "/js"));
-app.use("/pages", express.static(__dirname + "/pages"));
-app.use("/assets", express.static(__dirname + "/assets"));
+app.use("/", express.static(__dirname + "/dist"));
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/pages/game.html");
+  res.sendFile(__dirname + "/index.html");
 });
 
 app.get("/r/:code", function (req, res) {
-  res.sendFile(__dirname + "/pages/game.html");
+  res.sendFile(__dirname + "/index.html");
 });
 
 // sockets contain all player's socket of the server
