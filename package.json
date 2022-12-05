@@ -4,19 +4,33 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "build": "rmdir /s /q dist && webpack --mode development",
+    "test": "nodemon server.js",
+    "start": "node ./dist/server.js",
+    "dev": "rmdir /s /q dist && webpack && nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.20",
+    "rxjs": "^7.6.0",
     "socket.io": "^3.1.1",
+    "socket.io-client": "^4.5.4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "jsdoc-to-markdown": "^7.1.1"
+    "@babel/core": "^7.20.5",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.0",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "jsdoc-to-markdown": "^7.1.1",
+    "script-loader": "^0.7.2",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }
