@@ -95,7 +95,7 @@ io.on("connect", (socket) => {
     sockets[player.uuid] = socket;
     socket.emit("login", player);
     socket.emit("loadCursors", PM.players);
-    // socket.emit("map", map);
+    socket.emit("resetBall");
   });
 
   socket.on("mouse", (data) => {

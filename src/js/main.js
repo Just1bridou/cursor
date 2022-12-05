@@ -5,6 +5,8 @@ import Cursor from "./models/Cursor.js";
 import Ball from "./models/Elements/Ball.js";
 
 import io from "Modules/socket.io-client";
+import GameManagerMaster from "./models/GameManager.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const Section = {
     LOGIN: "login",
@@ -13,25 +15,24 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   //let bl = new BLOCK_LIMIT(60, 60);
-  let ball = new Ball(60, 60);
+  // let ball = new Ball(60, 60);
 
   const SM = new SpawnManager();
   const CM = new CursorManager();
   const PL = new PlayerListManager();
+  const GameManager = new GameManagerMaster();
   const socket = io.connect("http://localhost:8080");
-
-  console.log(socket);
 
   var uuid = null;
 
-  function spawn() {
-    SM.spawn();
+  // function spawn() {
+  //   SM.spawn();
 
-    var min = 1;
-    var max = 2;
-    var rand = Math.floor(Math.random() * (max - min + 1) + min);
-    setTimeout(spawn, rand * 1000);
-  }
+  //   var min = 1;
+  //   var max = 2;
+  //   var rand = Math.floor(Math.random() * (max - min + 1) + min);
+  //   setTimeout(spawn, rand * 1000);
+  // }
 
   // spawn();
 
@@ -123,5 +124,10 @@ document.addEventListener("DOMContentLoaded", () => {
   socket.on("removePlayer", (data) => {
     CM.remove(data);
     PL.remove(data);
+  });
+
+  socket.on("resetBall", (data) => {
+    GameManager.items.balls = [];
+    GameManager.items.balls.push(new Ball(50, 50));
   });
 });

@@ -62,8 +62,6 @@ export default class Cursor {
   }
 
   setPosition(x, y, oldPosition) {
-    console.log("setPosition", x, y, oldPosition);
-
     if (oldPosition.x != x && oldPosition.y != y) {
       let vectX = oldPosition.x - x;
       let vectY = oldPosition.y - y;
