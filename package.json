@@ -4,10 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "rmdir /s /q dist && webpack --mode development",
-    "test": "nodemon server.js",
-    "start": "node ./dist/server.js",
-    "dev": "rmdir /s /q dist && webpack && nodemon server.js"
+    "reset": "rmdir /s /q dist && nodemon server.js",
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
