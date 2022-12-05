@@ -1,9 +1,6 @@
-const TYPE = {
-  CURSOR: "cursor",
-  BLOCK: "block",
-};
+import { TYPE } from "/js/constants/constants.js";
 
-class Cursor {
+export default class Cursor {
   constructor(name, uuid, x, y, oldPosition) {
     this.uuid = uuid;
     this.name = name;
@@ -49,12 +46,27 @@ class Cursor {
     // }, false);
 
     document.querySelector(".game").appendChild(this.element);
+
+    document.addEventListener("mouseover", (event) => {
+      let collisionSource = event.target?.source;
+      let previous = event.relatedTarget?.source;
+
+      if (!collisionSource) return;
+
+      if (collisionSource != previous) {
+        console.log("new collision");
+        // console.log(collisionSource);
+        collisionSource.moveBall(this);
+      }
+    });
   }
 
   setPosition(x, y, oldPosition) {
     if (oldPosition.x != x && oldPosition.y != y) {
       let vectX = oldPosition.x - x;
       let vectY = oldPosition.y - y;
+
+      this.oldPosition = { x: oldPosition.x, y: oldPosition.y };
 
       let rotation = 0;
 
@@ -128,5 +140,27 @@ class Cursor {
 
   remove() {
     this.element.remove();
+  }
+
+  // check for collision with other element
+  checkCollision(element) {
+    let x = this.x;
+    let y = this.y;
+    let width = this.width;
+    let height = this.height;
+    let x2 = element.x;
+    let y2 = element.y;
+    let width2 = element.width;
+    let height2 = element.height;
+
+    if (
+      x < x2 + width2 &&
+      x + width > x2 &&
+      y < y2 + height2 &&
+      y + height > y2
+    ) {
+      return true;
+    }
+    return false;
   }
 }

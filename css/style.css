@@ -67,6 +67,7 @@
   align-items: center;
   transform-origin: 0% 0%;
   transition: 0.3s transform ease-out;
+  z-index: 500;
 }
 
 .container-text {
@@ -167,10 +168,21 @@
   top: 0;
   left: 0;
   z-index: 1000;
-  width: 100vw;
-  height: 100vh;
+  /* width: 100vw;
+  height: 100vh; */
 }
 
 .line {
   display: flex;
+}
+
+.black {
+  background-color: black;
+}
+
+.ball {
+  background-color: red;
+  border-radius: 100%;
+  position: absolute;
+  transition: 0.3s all ease-in-out;
 }

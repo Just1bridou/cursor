@@ -10,10 +10,11 @@ let app = express();
 let server = http.Server(app);
 let io = socketio(server);
 
-app.use("/css", express.static(__dirname + "/css"));
-app.use("/js", express.static(__dirname + "/js"));
-app.use("/pages", express.static(__dirname + "/pages"));
-app.use("/assets", express.static(__dirname + "/assets"));
+// app.use("/css", express.static(__dirname + "/css"));
+// app.use("/js", express.static(__dirname + "/js"));
+// app.use("/pages", express.static(__dirname + "/pages"));
+// app.use("/assets", express.static(__dirname + "/assets"));
+app.use("/", express.static(__dirname + "/"));
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/pages/game.html");
@@ -83,7 +84,7 @@ class PlayersManager {
 }
 
 const PM = new PlayersManager();
-const map = randomPath();
+// const map = randomPath();
 
 io.on("connect", (socket) => {
   socket.on("login", (data) => {
@@ -93,7 +94,7 @@ io.on("connect", (socket) => {
     sockets[player.uuid] = socket;
     socket.emit("login", player);
     socket.emit("loadCursors", PM.players);
-    socket.emit("map", map);
+    // socket.emit("map", map);
   });
 
   socket.on("mouse", (data) => {
@@ -118,52 +119,3 @@ io.on("connect", (socket) => {
 console.log("Running on port: " + process.env.PORT);
 
 server.listen(process.env.PORT);
-
-// function to generate random path into a double matrice of 50x50
-function randomPath() {
-  let matrice = [];
-  for (let i = 0; i < 50; i++) {
-    matrice[i] = [];
-    for (let j = 0; j < 50; j++) {
-      matrice[i][j] = 0;
-    }
-  }
-  let x = 0;
-  let y = 0;
-  let path = [];
-  let directions = ["up", "down", "left", "right"];
-  let direction;
-  let count = 0;
-  while (x != 49 || y != 49) {
-    direction = directions[Math.floor(Math.random() * 4)];
-    if (direction == "up" && y > 0) {
-      matrice[x][y] = 1;
-      y -= 1;
-      path.push({ x: x, y: y });
-      count = 0;
-    } else if (direction == "down" && y < 49) {
-      matrice[x][y] = 1;
-      y += 1;
-      path.push({ x: x, y: y });
-      count = 0;
-    } else if (direction == "left" && x > 0) {
-      matrice[x][y] = 1;
-      x -= 1;
-      path.push({ x: x, y: y });
-      count = 0;
-    } else if (direction == "right" && x < 49) {
-      matrice[x][y] = 1;
-      x += 1;
-      path.push({ x: x, y: y });
-      count = 0;
-    } else {
-      count++;
-    }
-    if (count > 100) {
-      console.log("Failed to generate path");
-      return;
-    }
-  }
-  matrice[x][y] = 1;
-  return path;
-}
